@@ -28,7 +28,7 @@ const prompts = [
 
 const pipeline = [
   { label: 'Retrieve', title: 'Vector search', detail: 'ChromaDB finds the passages in your notes that match your question.', icon: 'database' },
-  { label: 'Synthesize', title: 'Grounded synthesis', detail: 'Llama 3.1 uses those passages to explain the concept in context.', icon: 'cpu' },
+  { label: 'Synthesize', title: 'Grounded synthesis', detail: 'PrepMate uses those passages to answer your question.', icon: 'cpu' },
   { label: 'Cite', title: 'Page-level citations', detail: 'Trace each source back to the document and page it came from.', icon: 'pages' },
 ]
 
@@ -282,7 +282,7 @@ export default function App() {
   }
 
   const status = loading ? 'busy' : connection
-  const statusText = { idle: 'Local stack configured', busy: 'Retrieving an answer', ready: 'Last request succeeded', offline: 'Local server unreachable', error: 'Last request failed' }[status]
+  const statusText = { idle: 'Ready to ask', busy: 'Retrieving an answer', ready: 'Last request succeeded', offline: 'Local server unreachable', error: 'Last request failed' }[status]
 
   return (
     <div id="top" className="app">
@@ -291,7 +291,7 @@ export default function App() {
         <a className="brand" href="#top" aria-label="PrepMate AI home"><span className="brand-mark"><Icon name="bot" /></span><span>PrepMate <b>AI</b></span></a>
         <nav aria-label="Main navigation"><a href="#workspace">Study desk</a><a href="#how-it-works">How it works</a></nav>
         <div className="nav-tools">
-          <span className="stack-badge" data-status={status} title={statusText}><i /><span>Llama 3.1 · ChromaDB</span><span className="sr-only"> — {statusText}</span></span>
+          <span className="stack-badge" data-status={status} title={statusText}><i /><span>{statusText}</span></span>
           <button className="theme-button" aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}><Icon name={theme === 'light' ? 'moon' : 'sun'} /></button>
         </div>
       </div></header>

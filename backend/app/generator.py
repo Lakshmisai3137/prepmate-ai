@@ -1,13 +1,15 @@
+import os
+
 import httpx
 from retrieve import search_similar_chunks
 
 OLLAMA_GEN_URL = "http://localhost:11434/api/generate"
-GEN_MODEL = "llama3.1:latest"
+GEN_MODEL = os.getenv("PREPMATE_GENERATION_MODEL") or "llama3.1:latest"
 
 def generate_answer(query: str, top_k: int = 2, subject: str | None = None) -> dict:
     """
     Retrieves context from ChromaDB (with optional subject filter) and passes it
-    to Llama 3.1 to generate an answer grounded in the study notes.
+    to the configured generation model for an answer grounded in the study notes.
     """
     chunks = search_similar_chunks(query, top_k=top_k, subject=subject)
     

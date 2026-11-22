@@ -28,7 +28,7 @@ data/documents/<subject>/*.pdf
 React study desk --> FastAPI POST /api/ask --> Ollama embeds question
   --> Chroma searches nearest chunks (optional subject filter, default top_k = 2)
   --> Python builds a prompt from the retrieved text and page references
-  --> Ollama /api/generate runs llama3.1:latest
+  --> Ollama /api/generate runs the selected text-generation model
   --> FastAPI returns answer + sources --> React renders answer and citation cards
 ```
 
@@ -39,7 +39,7 @@ React study desk --> FastAPI POST /api/ask --> Ollama embeds question
 | Web client | React, Vite |
 | HTTP API | Python 3.12, FastAPI, Uvicorn, HTTPX |
 | Extraction and chunking | PyMuPDF and page-preserving Python functions |
-| Embeddings and generation | Ollama with `nomic-embed-text` and `llama3.1:latest` |
+| Embeddings and generation | Ollama with `nomic-embed-text` for retrieval and a configurable text-generation model |
 | Vector storage | Persistent ChromaDB with cosine similarity |
 
 ## Project layout
@@ -85,13 +85,18 @@ The curated library contains 16 PDFs and 620 pages. The four MIT OpenCourseWare 
 
 The commands below use PowerShell from the repository root. Install Python 3.12, Node.js 22.12 or later with npm, and Ollama. On macOS or Linux, create the environment with `python3.12 -m venv .venv` and activate it with `source .venv/bin/activate`.
 
-**1. Download the two models.** Start the Ollama desktop app, or run `ollama serve` in its own terminal if the service is stopped.
+**1. Choose a generation model.** PrepMate can use any local text-generation model that Ollama can serve through its [generate endpoint](https://docs.ollama.com/api/generate). The app was tested end to end with `llama3.1:latest`, which is the default. Switching the generation model reuses the existing PDF index because retrieval uses a separate embedding model, `nomic-embed-text`.
+
+Start the Ollama desktop app, or run `ollama serve` in its own terminal. In the PowerShell terminal where you will start FastAPI, set `PREPMATE_GENERATION_MODEL` to your chosen Ollama tag. The commands below use the tested model.
 
 ```powershell
 ollama pull nomic-embed-text
-ollama pull llama3.1:latest
+$env:PREPMATE_GENERATION_MODEL = "llama3.1:latest"
+ollama pull $env:PREPMATE_GENERATION_MODEL
 ollama list
 ```
+
+If FastAPI is already running, restart it from the terminal with the new setting. On macOS or Linux, use `export PREPMATE_GENERATION_MODEL='your-model:tag'` to set the variable.
 
 **2. Install the backend dependencies and restore the notes.**
 
