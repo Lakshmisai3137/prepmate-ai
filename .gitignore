@@ -1,0 +1,31 @@
+# Python virtual environment
+.venv/
+env/
+venv/
+
+# Python compiled bytecode cache
+__pycache__/
+*.py[cod]
+
+# Vector database storage
+data/chroma_db/
+
+# Environment variables & secrets
+.env
+
+# Frontend build output and dependencies
+frontend/node_modules/
+frontend/dist/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.freebuff/
+
+# Keep personal and third-party notes local. MIT OCW course notes are bundled.
+data/documents/**/*.pdf
+!data/documents/dsa/arrays.pdf
+!data/documents/dsa/binary-trees.pdf
+!data/documents/dsa/breadth-first-search.pdf
+!data/documents/dsa/dynamic-programming.pdf
